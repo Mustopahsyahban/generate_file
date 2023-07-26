@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${type} + ' Jabatan')}"></header>
+<main>
+    <form th:object="${jabatan}" class="upsert-form" method="post" th:attr="action=@{/jabatan/upsert}">
+
+        <!--       #ini yg csrf biar bisa insert sesuatu kalo ga gabisa insert-->
+
+
+        <table>
+            <tbody>
+            <input type="hidden" th:field="*{id}">
+            <tr>
+                <td><label>Jenis Jabatan</label></td>
+                <td>
+                    <input type="text" th:field="*{name}">
+
+                </td>
+            </tr>
+
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button type="submit" class="silver-button" th:text="${type} + ' Jabatan'"></button>
+        <a class="silver-button create-button" th:href="@{/jabatan/index}">Back</a>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

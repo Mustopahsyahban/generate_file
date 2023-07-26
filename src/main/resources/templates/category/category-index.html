@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (Category)}"></header>
+<main class="seller-index">
+    <div class="grid-container">
+        <form method="get" class="filter" th:attr="action=@{/category/index}">
+            <input type="text" name="name" placeholder="Category Name..." th:attr="value=${name}">
+            <button class="blue-button" type="submit">Search</button>
+        </form>
+        <a class="yellow-button create-button" th:href="@{/category/upsertForm}">Insert Category</a>
+        <table>
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th>Name</th>
+                <th>Floor</th>
+                <th>Isle</th>
+                <th>Bay</th>
+                <th>Total Book</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="seller : ${grid}" th:object="${seller}">
+                <td >
+                    <a class="blue-button update-button" th:href="@{/category/upsertForm(name=*{name})}">Update</a>
+                    <a class="red-button delete-button" th:href="@{/category/delete(name=*{name})}">Delete</a>
+                    <a class="silver-button detail-button" th:href="@{/category/detail(name=*{name})}">Book</a>
+                </td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{floor}"></td>
+                <td th:text="*{isle}"></td>
+                <td th:text="*{bay}"></td>
+                <td th:text="*{totalBook}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="5">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+                        <div>
+                            <a th:if="${totalPages > 0}" th:each="loop:${#numbers.sequence(1, totalPages)}"
+                               th:href="@{/category(page=${loop},name=${name})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

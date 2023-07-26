@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header ('Periode List')}"></header>
+<main class="seller-index">
+    <div class="grid-container">
+        <form method="get" class="filter" th:attr="action=@{/periode/index}">
+        </form>
+        <a class="blue-button create-button" th:href="@{/periode/upsertForm}">Insert Periode</a>
+        <table>
+            <thead>
+            <tr>
+                <th>Jenis Periode</th>
+                <th>Aksi</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="periode : ${grid}" th:object="${periode}">
+
+                <td th:text="*{jenisPeriode}"></td>
+
+                <td >
+                    <a class="blue-button delete-button" th:href="@{/periode/upsertForm(id=*{id})}">Update</a>
+                    <a class="red-button detail-button" th:href="@{/periode/delete(id=*{id})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

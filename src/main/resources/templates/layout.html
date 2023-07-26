@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head" >
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Basilisk</title>
+    <link rel="icon" type="image/ico" th:href="@{/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/normalize.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/resources/css/site.css}"/>
+    <script th:src="@{/resources/js/jquery-3.6.0.js}" defer></script>
+    <script th:src="@{/resources/js/jquery-3.6.0.min.js}" defer></script>
+    <script th:src="@{/resources/js/site.js}" defer></script>
+</head>
+<body>
+    <nav th:fragment="navigation">
+        <a class="menu supplier" th:href="@{/account/home}">
+        <div class="company-logo">
+
+<!--            <img th:src="@{/resources/image/logo.png}" alt="Basilisk" />-->
+            <h1>
+                Mustopah <span class="bold">Company</span>
+            </h1>
+        </div>
+            <a class="menu category" th:href="@{/rbb22C00}">
+                <i class="fa-brands fa-free-code-camp"></i>
+                <span>RBB 22C00</span>
+            </a>
+        <a class="menu category" th:href="@{/employeePeriode/index}">
+            <i class="fa-brands fa-free-code-camp"></i>
+            <span>Employee Periode</span>
+        </a>
+        <a class="menu supplier" th:href="@{/periode/index}">
+            <i class="fa-brands fa-free-code-camp"></i>
+            <span>Periode</span>
+        </a>
+            <a class="menu product" th:href="@{/jabatan/index}">
+                <i class="fa-brands fa-free-code-camp"></i>
+                <span>Jabatan</span>
+            </a>
+            <a class="menu customer" th:href="@{/devisi/index}">
+                <i class="fa-brands fa-free-code-camp"></i>
+                <span>Devisi</span>
+            </a>
+            <a class="menu customer" th:href="@{/nasabah/index}">
+                <i class="fa-brands fa-free-code-camp"></i>
+                <span>Nasabah</span>
+            </a>
+
+            <a class="menu category" th:href="@{https://www.instagram.com/mustopah_syahban/}">
+                <i class="fab fa-instagram"></i>
+                <span>Instagram</span>
+            </a>
+            <a class="menu category" th:href="@{https://www.linkedin.com/in/mustopah-aa3592207/}">
+                <i class="fab fa-linkedin"></i>
+                <span>LinkedId.</span>
+            </a>
+            <a class="menu category" th:href="@{https://api.whatsapp.com/send?phone=62895333349412}">
+                <i class="fab fa-whatsapp"></i>
+                <span>Whatsapp</span>
+            </a>
+    </nav>
+    <header th:fragment="header(breadCrumbs)">
+        <div class="bread-crumbs">
+            <span th:text="${breadCrumbs}"></span>
+        </div>
+
+    </header>
+    <main></main>
+    <footer th:fragment="footer">
+        Copyright &copy; 2021
+        <span class="author">Mustopah As-Syahban</span>
+        All right reserved.
+    </footer>
+</body>
+</html>

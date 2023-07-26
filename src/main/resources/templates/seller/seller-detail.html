@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header ('Seller / Store')}"></header>
+<main>
+    <div class="grid-container">
+        <section class="header-info" th:object="${header}">
+            <div>Seller Id: <span th:text="*{id}"></span></div>
+            <div>Seller Name: <span th:text="*{name}"></span></div>
+            <div>Birth Date: <span th:text="*{birthDate}"></span></div>
+        </section>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Address</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="store : ${detailGrid}" th:object="${store}">
+                <td th:text="*{name}"></td>
+                <td th:text="*{description}"></td>
+                <td th:text="*{address}"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3">
+                    <div class="pagination">
+                        <div th:text="|page ${currentPage} of ${totalPages}|"></div>
+                        <div>
+                            <a th:if="${totalPages > 0}" th:each="loop:${#numbers.sequence(1, totalPages)}"
+                               th:href="@{/seller/detail(page=${loop},id=${header.id})}"
+                               th:text="${loop}"></a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

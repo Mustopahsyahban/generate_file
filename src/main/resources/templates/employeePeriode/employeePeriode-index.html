@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header ('Employee Periode List')}"></header>
+<main class="seller-index">
+    <div class="grid-container">
+        <form method="get" class="filter" th:attr="action=@{/employeePeriode/index}">
+        </form>
+        <a class="blue-button create-button" th:href="@{/employeePeriode/upsertForm}">Insert Employee Periode</a>
+        <table>
+            <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Jabatan</th>
+                <th>Nama Devisi</th>
+                <th>Periode</th>
+                <th>Status</th>
+                <th>Aksi</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="employeePeriode : ${grid}" th:object="${employeePeriode}">
+
+                <td th:text="*{name}"></td>
+                <td th:text="*{jabatan}"></td>
+                <td th:text="*{namaDevisi}"></td>
+                <td th:text="*{periode}"></td>
+                <td th:text="*{status}"></td>
+
+                <td >
+                    <a class="blue-button delete-button" th:href="@{/employeePeriode/upsertForm(id=*{id})}">Update</a>
+                    <a class="red-button detail-button" th:href="@{/employeePeriode/delete(id=*{id})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

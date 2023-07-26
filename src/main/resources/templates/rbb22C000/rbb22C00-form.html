@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${type} + ' Data')}"></header>
+<main>
+    <form th:object="${rbb22C00}" class="upsert-form" method="post" th:attr="action=@{/rbb22C00/upsert}">
+
+        <!--       #ini yg csrf biar bisa insert sesuatu kalo ga gabisa insert-->
+
+
+        <table>
+            <tbody>
+            <input type="hidden" th:field="*{id}">
+            <tr>
+                <td><label>Kode Komponen</label></td>
+                <td>
+                    <input type="text" th:field="*{kdKomponen}" disabled="true">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Nama Komponen</label></td>
+                <td>
+                    <input type="text" th:field="*{nmKomponen}" disabled="true">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Realisai T3</label></td>
+                <td>
+                    <input type="number" th:field="*{realisaiT3}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>T4 Min 1</label></td>
+                <td>
+                    <input type="number" th:field="*{t4Min1}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>T1</label></td>
+                <td>
+                    <input type="number" th:field="*{t1}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>T2</label></td>
+                <td>
+                    <input type="number" th:field="*{t2}">
+
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>T3</label></td>
+                <td>
+                    <input type="number" th:field="*{t3}">
+
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>T4</label></td>
+                <td>
+                    <input type="number" th:field="*{t4}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>T4 PLUS 1</label></td>
+                <td>
+                    <input type="number" th:field="*{t4Plus1}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>T4 PLUS 2</label></td>
+                <td>
+                    <input type="number" th:field="*{t4Plus2}">
+
+                </td>
+            </tr>
+
+
+            </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button type="submit" class="silver-button" th:text="${type} + ' Data'"></button>
+        <a class="silver-button create-button" th:href="@{/rbb22C00/index?tglLapor=}+${tglLaporView}">Back</a>
+
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

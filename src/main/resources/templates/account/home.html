@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header('')}"></header>
+<main>
+    <h1>Bank Negara Indonesia</h1>
+    <div class="home-logo" align="center">
+        <img th:src="@{/resources/image/logo.png}" alt="Lbrary" />
+    </div>
+<div class="home-logo" align="left" >
+
+
+    </div>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

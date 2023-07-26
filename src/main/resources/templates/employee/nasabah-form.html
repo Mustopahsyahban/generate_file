@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${type} + ' Nasabah')}"></header>
+<main>
+    <form th:object="${nasabah}" class="upsert-form" method="post" th:attr="action=@{/nasabah/upsert}">
+
+        <!--       #ini yg csrf biar bisa insert sesuatu kalo ga gabisa insert-->
+
+
+        <table>
+            <tbody>
+            <input type="hidden" th:field="*{id}">
+            <tr>
+                <td><label>Name</label></td>
+                <td>
+                    <input type="text" th:field="*{name}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Tempat Lahir</label></td>
+                <td>
+                    <input type="text" th:field="*{tempatLahir}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Tanggal Lahir</label></td>
+                <td>
+                    <input type="date" th:field="*{tanggalLahir}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Alamat</label></td>
+                <td>
+                    <input type="text" th:field="*{alamat}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Rata-Rata Penghasilan</label></td>
+                <td>
+                    <input type="number" th:field="*{penghasilan}">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Jenis Nasabah</label></td>
+                <td>
+                    <select th:field="*{jenisNasabah}">
+                        <option th:value=null>Pilih Jenis Nasabah*</option>
+                        <option value="Perorangan">Perorangan</option>
+                        <option value="Perusahaan">Perusahaan</option>
+                    </select>
+                    <div class="field-validation-error" th:errors="*{jenisNasabah}"></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Id Customer</label></td>
+                <td>
+                    <input type="text" th:field="*{idCustomer}">
+
+
+                </td>
+            </tr>
+
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button type="submit" class="silver-button" th:text="${type} + ' Nasabah'"></button>
+        <a class="silver-button create-button" th:href="@{/nasabah/index}">Back</a>
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>
