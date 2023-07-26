@@ -29,23 +29,15 @@ public class Rbb22C00Controller {
 
     @GetMapping("/index")
     public String get (@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date tglLapor, Model model) throws ParseException {
-//        SimpleDateFormat io = new SimpleDateFormat("yyyy-MM-dd");
-//        String tanggal;
-//        if (model.getAttribute("tglLapor") == null){
-//            tanggal = "2023-03-28";
-//        }else{
-//            tanggal = (model.getAttribute("tglLapor")).toString();
-//        }
-
         String kdForm = "0001";
         String nameForm = service.getNameForm(kdForm);
-        Date date = tglLapor;
         String tglLaporanView = "(" + po.format(tglLapor) + ")";
 
             List<RBB_22C00Entity>grid = service.findAll(tglLapor);
             model.addAttribute("grid",grid);
             model.addAttribute("nameForm", nameForm);
             model.addAttribute("tglLapor", tglLapor);
+            model.addAttribute("tglPlas", tglLapor);
             model.addAttribute("tglLaporView", tglLaporanView );
             tanggalAdd= tglLapor;
 
@@ -67,6 +59,7 @@ public class Rbb22C00Controller {
                     dto.getKdKomponen().equals("220301990000") ||
                     dto.getKdKomponen().equals("220301020299") || dto.getKdKomponen().equals("220301020300") ||
                     dto.getKdKomponen().equals("220301020399") || dto.getKdKomponen().equals("220301029900")) {
+
                 return "redirect:/rbb22C00/index?tglLapor=" + io.format(tanggalAdd);
             } else {
                 RBB_22C00Entity entity = service.getUpdateData(id);

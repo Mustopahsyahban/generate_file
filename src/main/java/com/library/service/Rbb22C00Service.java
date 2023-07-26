@@ -71,7 +71,7 @@ public class Rbb22C00Service {
 
     }
 
-    public String save(RBB_22C00Entity dto) {
+    public void save(RBB_22C00Entity dto) {
 
 
         //update
@@ -91,11 +91,11 @@ public class Rbb22C00Service {
 
 
             querySQL.setDoChangeAmountRbb22C(newEntity.getTglPelaporan());
-            return entity.getNmKomponen();
+
         }else {
             //Crate
             RBB_22C00Entity entity = repository.save(dto);
-            return entity.getNmKomponen();
+
         }
 
     }

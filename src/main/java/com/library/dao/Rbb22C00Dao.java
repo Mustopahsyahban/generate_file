@@ -2,6 +2,7 @@ package com.library.dao;
 
 import com.library.entity.RBB_22C00Entity;
 import com.library.StringNum.StringNum;
+import com.library.querySQL.QuerySQL;
 import com.library.repository.Rbb22C00Repository;
 import com.library.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class Rbb22C00Dao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    private QuerySQL querySQL;
 
     private SimpleDateFormat io = new SimpleDateFormat(StringNum.FORMAT_DATE_STRIP_YYYYMMDD.getDescription());
 
@@ -47,10 +50,7 @@ public class Rbb22C00Dao {
 
 
     public void queryAddData(Date tglLapor){
-        jdbcTemplate.execute("INSERT INTO RBB_22C00\n" +
-                "( TGL_PELAPORAN, KD_KOMPONEN, NO_KOMPONEN, PARENT_KODE, NM_KOMPONEN, REALISASI_T3, IS_REALISASI_T3, T4_MIN_1, IS_T4_MIN_1, T1, IS_T1, T2, IS_T2, T3, IS_T3, T4, IS_T4, T4_PLUS_1, IS_T4_PLUS_1, T4_PLUS_2, IS_T4_PLUS_2, STATUS, INCLUDE_TEXT, USER_ENTRY, DATE_ENTRY, USER_UPDATE, DATE_UPDATE, IS_FORMULA)\n" +
-                "SELECT '"+io.format(tglLapor)+"' , KD_KOMPONEN, NO_KOMPONEN, PARENT_KODE, NM_KOMPONEN, REALISASI_T3, IS_REALISASI_T3, T4_MIN_1, IS_T4_MIN_1, T1, IS_T1, T2, IS_T2, T3, IS_T3, T4, IS_T4, T4_PLUS_1, IS_T4_PLUS_1, T4_PLUS_2, IS_T4_PLUS_2, STATUS, INCLUDE_TEXT, 'Admin', '"+io.format(new Date())+"', 'Admin', DATE_UPDATE, IS_FORMULA\n" +
-                "FROM RBB_22C00_MASTER");
+     querySQL.setAddDataRbb22C00(tglLapor);
 
     }
 
