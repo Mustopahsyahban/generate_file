@@ -5,7 +5,9 @@ public enum StringNum {
 
     ADD_DATA_RBB_22C00 (1,"TEST"),
 
-    FORMAT_DATE_STRIP_YYYYMMDD (2, "yyyy-MM-dd")
+    FORMAT_DATE_STRIP_YYYYMMDD (2, "yyyy-MM-dd"),
+
+    FORMAT_DATE_SLASH_YYYYMMDD (2, "dd/MM/yyyy")
 
 
     ;

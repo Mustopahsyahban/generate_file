@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body class="main-body">
+<nav th:replace="~{layout :: navigation}"></nav>
+<header th:replace="~{layout :: header (${type} + ' Data')}"></header>
+<main>
+    <form th:object="${labaRugi}" class="upsert-form" method="post" th:attr="action=@{/LabaRugi/upsert}">
+
+        <!--       #ini yg csrf biar bisa insert sesuatu kalo ga gabisa insert-->
+
+
+        <table>
+            <tbody>
+
+            <input type="hidden" th:field="*{kdKomponen}">
+            <tr>
+                <td><label>Nama</label></td>
+                <td>
+                    <input type="text" th:field="*{nmKomponen}" disabled="true">
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>Detail</label></td>
+                <td>
+                    <input type="number" th:field="*{detail}">
+
+                </td>
+            </tr>
+
+            </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button type="submit" class="silver-button" th:text="${type} + ' Data'"></button>
+        <a class="silver-button create-button" th:href="@{/LabaRugi/index?tglLapor=}+${tglLaporView}">Back</a>
+
+    </form>
+</main>
+<footer th:replace="~{layout :: footer}"></footer>
+</body>
+</html>

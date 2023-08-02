@@ -30,7 +30,7 @@ public class Rbb22C00Controller {
     @GetMapping("/index")
     public String get (@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date tglLapor, Model model) throws ParseException {
         String kdForm = "0001";
-        String nameForm = service.getNameForm(kdForm);
+        String nameForm = service.getName(kdForm);
         String tglLaporanView = "(" + po.format(tglLapor) + ")";
 
             List<RBB_22C00Entity>grid = service.findAll(tglLapor);

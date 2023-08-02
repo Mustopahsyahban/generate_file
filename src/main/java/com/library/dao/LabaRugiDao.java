@@ -1,8 +1,9 @@
 package com.library.dao;
 
-import com.library.entity.RBB_22C00Entity;
 import com.library.StringNum.StringNum;
+import com.library.entity.LabaRugiEntity;
 import com.library.querySQL.QuerySQL;
+import com.library.repository.LabaRugiRepository;
 import com.library.repository.Rbb22C00Repository;
 import com.library.service.FormService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +13,20 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 @Service
-public class Rbb22C00Dao {
+public class LabaRugiDao {
 
 
+   
     @Autowired
-    private FormService formService;
-    @Autowired
-    private Rbb22C00Repository repository;
+    private LabaRugiRepository repository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+
+    @Autowired
     private QuerySQL querySQL;
 
     private SimpleDateFormat io = new SimpleDateFormat(StringNum.FORMAT_DATE_STRIP_YYYYMMDD.getDescription());
@@ -31,18 +34,18 @@ public class Rbb22C00Dao {
 
 
 
-    public RBB_22C00Entity getByIdDao(Long id){
+    public LabaRugiEntity getByIdDao(Date tglLapor, String kdKomponen){
 
-        RBB_22C00Entity entity = repository.findByIdData(id);
+        LabaRugiEntity entity = repository.findByIdData(tglLapor, kdKomponen);
 
         return entity;
     }
 
 
-    public List<RBB_22C00Entity> findAllDataByTglLaporDao(Date tglLapor){
+    public List<LabaRugiEntity> findAllDataByTglLaporDao(Date tglLapor){
 
 
-        List<RBB_22C00Entity> listEntity =  repository.findAllData(tglLapor);
+        List<LabaRugiEntity> listEntity =  repository.findAllData(tglLapor);
 
         return listEntity;
     }
@@ -50,26 +53,18 @@ public class Rbb22C00Dao {
 
 
     public void queryAddData(Date tglLapor){
-     querySQL.setAddDataRbb22C00(tglLapor);
+    querySQL.setAddDataLabaRugi(tglLapor);
 
     }
 
-    public RBB_22C00Entity getUpdateData(Long id){
-        RBB_22C00Entity entity = repository.findById(id).get();
+    public LabaRugiEntity getUpdateData(Date tglLapor, String kdKomponen){
+        LabaRugiEntity entity = repository.findByIdData(tglLapor, kdKomponen);
         return entity;
     }
 
 
 
-    public List<RBB_22C00Entity>getDataDoChangeAmount(Date tglPelPoran){
 
-        List<RBB_22C00Entity>list = repository.findAllDataWhitParentCode(tglPelPoran);
-
-        return list;
     }
 
 
-
-
-
-}

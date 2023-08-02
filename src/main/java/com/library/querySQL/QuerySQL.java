@@ -169,4 +169,115 @@ public class QuerySQL {
                 "SELECT '"+io.format(tglLapor)+"' , KD_KOMPONEN, NO_KOMPONEN, PARENT_KODE, NM_KOMPONEN, REALISASI_T3, IS_REALISASI_T3, T4_MIN_1, IS_T4_MIN_1, T1, IS_T1, T2, IS_T2, T3, IS_T3, T4, IS_T4, T4_PLUS_1, IS_T4_PLUS_1, T4_PLUS_2, IS_T4_PLUS_2, STATUS, INCLUDE_TEXT, 'Admin', '"+io.format(new Date())+"', 'Admin', DATE_UPDATE, IS_FORMULA " +
                 "FROM RBB_22C00_MASTER");
     }
+
+
+    public void setAddDataLabaRugi(Date tglLapor){
+        jdbcTemplate.execute("INSERT INTO LABA_RUGI " +
+                "( TGL_PELAPORAN, KD_KOMPONEN, NO_KOMPONEN, PARENT_KODE, NM_KOMPONEN, DETAIL, MAX_SUM, STATUS,  USER_ENTRY, DATE_ENTRY, USER_UPDATE, DATE_UPDATE) " +
+                "SELECT '"+io.format(tglLapor)+"' , KD_KOMPONEN, NO_KOMPONEN, PARENT_KODE, NM_KOMPONEN, DETAIL, MAX_SUM, STATUS, 'Admin', '"+io.format(new Date())+"', 'Admin', DATE_UPDATE " +
+                "FROM LABA_RUGI_MASTER");
+
+    }
+
+    public void setChangeAmountLabaRugi (Date tglLapor){
+
+
+        jdbcTemplate.execute("UPDATE LABA_RUGI " +
+                "SET MAX_SUM = (SELECT SUM (DETAIL)  FROM LABA_RUGI WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND NO_KOMPONEN IN ('01','02','03')) " +
+                "WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00040000'");
+
+        jdbcTemplate.execute("UPDATE LABA_RUGI " +
+                "SET MAX_SUM = (SELECT SUM (DETAIL)  FROM LABA_RUGI WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND NO_KOMPONEN IN ('06','07','08','09','10')) " +
+                "WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00110000'");
+
+        jdbcTemplate.execute("UPDATE LABA_RUGI " +
+                "SET MAX_SUM = (SELECT SUM (DETAIL)  FROM LABA_RUGI WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND NO_KOMPONEN IN ('13','14')) " +
+                "WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00150000'");
+
+        jdbcTemplate.execute("UPDATE LABA_RUGI " +
+                "SET MAX_SUM = (SELECT SUM (DETAIL)  FROM LABA_RUGI WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND NO_KOMPONEN IN ('17','18')) " +
+                "WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00190000'");
+
+
+        jdbcTemplate.execute("UPDATE LABA_RUGI " +
+                "SET MAX_SUM = ((SELECT  MAX_SUM  FROM LABA_RUGI WHERE TGL_PELAPORAN = '2023-08-02' AND NO_KOMPONEN =  ('15')) - (SELECT  MAX_SUM  FROM LABA_RUGI WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND NO_KOMPONEN =  ('19')) ) " +
+                "WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00200000'");
+
+
+        Integer PlushAndMinus = jdbcTemplate.queryForObject("SELECT" +
+                " SUM (MAX_SUM)" +
+                " FROM " +
+                " LABA_RUGI " +
+                " WHERE " +
+                " TGL_PELAPORAN = '"+io.format(tglLapor)+"' " +
+                " AND NO_KOMPONEN IN ('11','20')", Integer.class);
+        if(PlushAndMinus == null){
+            PlushAndMinus = 0;
+        }
+
+        Integer hasil;
+        if (PlushAndMinus <= 0){
+            hasil =
+            jdbcTemplate.queryForObject("SELECT " +
+                    " (SUM (MAX_SUM)) + ( SELECT " +
+                    " SUM (MAX_SUM) " +
+                    " FROM " +
+                    "  LABA_RUGI " +
+                    " WHERE " +
+                    "  TGL_PELAPORAN = '"+io.format(tglLapor)+"' " +
+                    "  AND NO_KOMPONEN IN ('11','19')) " +
+                    " FROM " +
+                    "  LABA_RUGI " +
+                    " WHERE " +
+                    "  TGL_PELAPORAN = '"+io.format(tglLapor)+"' " +
+                    "  AND NO_KOMPONEN IN ('15', '04') ", Integer.class);
+        }else{
+            hasil =
+                    jdbcTemplate.queryForObject("SELECT " +
+                    " (SUM (MAX_SUM)) - ( SELECT " +
+                    " SUM (MAX_SUM) " +
+                    " FROM " +
+                    "  LABA_RUGI " +
+                    " WHERE " +
+                    "  TGL_PELAPORAN = '"+io.format(tglLapor)+"' " +
+                    "  AND NO_KOMPONEN IN ('11','19')) " +
+                    " FROM " +
+                    "  LABA_RUGI " +
+                    " WHERE " +
+                    "  TGL_PELAPORAN = '"+io.format(tglLapor)+"' " +
+                    "  AND NO_KOMPONEN IN ('15', '04') ", Integer.class);
+        }
+
+        jdbcTemplate.execute("UPDATE LABA_RUGI " +
+                "SET MAX_SUM = "+hasil+
+                " WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00210000'");
+
+       Integer taskValidasi = jdbcTemplate.queryForObject("SELECT MAX_SUM FROM LABA_RUGI lr WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN = '00210000'", Integer.class);
+
+       if (taskValidasi > 0){
+           jdbcTemplate.execute("UPDATE LABA_RUGI"+
+                   " SET MAX_SUM =  (SELECT (((MAX_SUM )*10)/100) FROM LABA_RUGI WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND NO_KOMPONEN =  ('21'))"+
+                   "WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00220000'");
+
+           jdbcTemplate.execute("UPDATE LABA_RUGI"+
+                   " SET MAX_SUM = ( (SELECT MAX_SUM  FROM LABA_RUGI WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND NO_KOMPONEN =  ('21')) - (SELECT MAX_SUM  FROM LABA_RUGI WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND NO_KOMPONEN =  ('22')) )"+
+                   "WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00230000'");
+       }else {
+
+           jdbcTemplate.execute("UPDATE LABA_RUGI" +
+                   " SET MAX_SUM = 0  " +
+                   "WHERE TGL_PELAPORAN = '" + io.format(tglLapor) + "' AND KD_KOMPONEN='00220000'");
+
+           jdbcTemplate.execute("UPDATE LABA_RUGI"+
+                   " SET MAX_SUM ="+taskValidasi +
+                   "WHERE TGL_PELAPORAN = '"+io.format(tglLapor)+"' AND KD_KOMPONEN='00230000'");
+       }
+
+    }
+
+
+
+
+
+
 }

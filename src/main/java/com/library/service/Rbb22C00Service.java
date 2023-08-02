@@ -1,5 +1,6 @@
 package com.library.service;
 
+import com.library.controller.MasterFormContoller;
 import com.library.dao.Rbb22C00Dao;
 import com.library.querySQL.QuerySQL;
 import com.library.repository.Rbb22C00Repository;
@@ -15,6 +16,9 @@ public class Rbb22C00Service {
 
     @Autowired
     private Rbb22C00Repository repository;
+
+    @Autowired
+    MasterFormContoller masterForm;
 
 
     @Autowired
@@ -36,6 +40,13 @@ public class Rbb22C00Service {
         return entity;
     }
 
+    public String getName(String kdForm){
+
+        String nameForm = masterForm.getNameForm(kdForm);
+
+        return  nameForm;
+    }
+
     public Date getTglLaporById (Long id){
 
         RBB_22C00Entity entity=  dao.getByIdDao(id);
@@ -43,12 +54,7 @@ public class Rbb22C00Service {
         return entity.getTglPelaporan();
     }
 
-    public String getNameForm (String kdForm){
 
-        String nameForm = dao.getNameForm(kdForm);
-
-        return nameForm;
-    }
 
     public Boolean cekAddData(Date tglLapor){
        List<RBB_22C00Entity>list= dao.findAllDataByTglLaporDao(tglLapor);
