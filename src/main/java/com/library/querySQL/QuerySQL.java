@@ -1,5 +1,6 @@
 package com.library.querySQL;
 
+import com.library.StringNum.StringNum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ public class QuerySQL {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    private SimpleDateFormat io = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat io = new SimpleDateFormat(StringNum.FORMAT_DATE_STRIP_YYYYMMDD.getDescription());
     public void setDoChangeAmountRbb22C(Date tglLapor){
 
 

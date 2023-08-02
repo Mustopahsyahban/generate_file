@@ -90,7 +90,7 @@ public class LabaRugiController {
     @PostMapping("/upsert")
     public String upsert(@Valid @ModelAttribute("labaRugi") LabaRugiEntity dto,
                          BindingResult bindingResult, Model model){
-        SimpleDateFormat io = new SimpleDateFormat("yyyy-MM-dd");
+
         if(bindingResult.hasErrors()){
 
             String type = "UPDATE";

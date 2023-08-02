@@ -1,7 +1,6 @@
 package com.library.repository;
 
-import com.library.entity.DKprimeryKey;
-import com.library.entity.LabaRugiEntity;
+import com.library.common.DKprimeryKey;
 import com.library.entity.LabaRugiEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
