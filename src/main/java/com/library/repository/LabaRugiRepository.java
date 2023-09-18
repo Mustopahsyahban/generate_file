@@ -19,10 +19,5 @@ public interface LabaRugiRepository extends JpaRepository<LabaRugiEntity, DKprim
     @Query(value = "SELECT * FROM LABA_RUGI WHERE TGL_PELAPORAN = :tglLapor AND KD_KOMPONEN = :kdKomponen  ", nativeQuery = true)
     LabaRugiEntity findByIdData (@Param("tglLapor") Date tglLapor, @Param("kdKomponen") String kdKomponen);
 
-//    @Query(value = "SELECT * FROM LABA_RUGI WHERE TGL_PELAPORAN = :tglLapor AND PARENT_KODE IS NOT NULL ORDER BY ID ASC ", nativeQuery = true)
-//    List<LabaRugiEntity>findAllDataWhitParentCode(@Param("tglLapor")Date tglLapor);
-
-
-//    LabaRugiEntity findByTglLporAndKdKomponen(@Param("tglLapor") Date tglLapor, @Param("kdKomponen") String kdKomponen);
     
 }

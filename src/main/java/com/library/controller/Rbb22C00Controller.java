@@ -87,6 +87,13 @@ public class Rbb22C00Controller {
     }
 
 
+    @GetMapping("/exportData")
+    public void doExport (){
+
+            service.exportExcel(tanggalAdd);
+    }
+
+
     @PostMapping("/upsert")
     public String upsert(@Valid @ModelAttribute("devisi") RBB_22C00Entity dto,
                          BindingResult bindingResult, Model model){

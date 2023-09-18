@@ -24,6 +24,7 @@ public class Rbb22C00Dao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
     private QuerySQL querySQL;
 
     private SimpleDateFormat io = new SimpleDateFormat(StringNum.FORMAT_DATE_STRIP_YYYYMMDD.getDescription());
