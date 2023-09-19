@@ -5,12 +5,16 @@ import com.library.entity.RBB_22C00Entity;
 import com.library.service.Rbb22C00Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -88,9 +92,19 @@ public class Rbb22C00Controller {
 
 
     @GetMapping("/exportData")
-    public void doExport (){
+    public String doExport () throws IOException  {
 
-            service.exportExcel(tanggalAdd);
+       service.exportExcel(tanggalAdd);
+
+         return "redirect:/rbb22C00/index?tglLapor="+io.format(tanggalAdd);
+    }
+
+    @GetMapping("/exportDataTxt")
+    public String doExportTxt () throws IOException  {
+
+        service.exportTxt(tanggalAdd);
+
+        return "redirect:/rbb22C00/index?tglLapor="+io.format(tanggalAdd);
     }
 
 

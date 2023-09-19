@@ -20,11 +20,11 @@ html {
     grid-template-areas: "menu top" "menu content" "menu bottom";
 }
 .main-body > nav {
-    background-color: whitesmoke;
+    background-color: #c0c0c0;
     grid-area: menu;
 }
 .main-body > header {
-    background-color: darkseagreen;
+    background-color: #009090;
     grid-area: top;
     display: flex;
     justify-content:space-between;
