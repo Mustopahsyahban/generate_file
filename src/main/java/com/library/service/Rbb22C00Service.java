@@ -39,6 +39,7 @@ public class Rbb22C00Service {
     @Autowired
     public Rbb22C00Repository rbb22C00Repository;
 
+    SimpleDateFormat iob = new SimpleDateFormat("yyyyMMdd");
 
     @Autowired
     private Rbb22C00Dao dao;
@@ -83,28 +84,33 @@ public class Rbb22C00Service {
         }
     }
 
-    public void exportExcel(Date tanggalLapor) {
+    public String exportExcel(Date tanggalLapor) {
 
         List<RBB_22C00Entity> ada = repository.findAllData(tanggalLapor);
         if (ada.size() > 0) {
-            String judul = "Laporan Data Keuangan.csv";
+            String judul = iob.format(tanggalLapor)+"-"+"Laporan Data Keuangan.csv";
 
           pathExcel(judul, ada);
 
+          return judul;
+
+        }else {
+            return null;
         }
 
     }
 
-    public void exportTxt(Date tanggalLapor) {
+    public String  exportTxt(Date tanggalLapor) {
 
         List<RBB_22C00Entity> ada = repository.findAllData(tanggalLapor);
         if (ada.size() > 0) {
-            String judul = "Laporan Data Keuangan.txt";
+            String judul = iob.format(tanggalLapor)+"-"+"Laporan Data Keuangan.txt";
 
             pathExcelTxt(judul, ada);
-
-        }
-
+            return judul;
+        }else{
+        return null;
+            }
     }
 
     public void tambahData(Date tglLapor) {
@@ -160,8 +166,8 @@ public class Rbb22C00Service {
     public void pathExcel(String fileName, List<RBB_22C00Entity> list) {
 
         try {
-
-            FileOutputStream fos = new FileOutputStream("C:\\Users\\user\\Documents\\project\\MiniApolo\\mini-apolo\\"+fileName);
+        if(!list.isEmpty()) {
+            FileOutputStream fos = new FileOutputStream("C:\\Users\\user\\Documents\\project\\MiniApolo\\mini-apolo\\" + fileName);
             OutputStreamWriter writerOutput = new OutputStreamWriter(fos);
             CSVWriter writer = new CSVWriter(writerOutput, '|',
                     CSVWriter.NO_QUOTE_CHARACTER,
@@ -170,7 +176,7 @@ public class Rbb22C00Service {
 
             String[] headers = {"Kode Komponen", "Nama Komonen", "Reaslisai T3", "T4 Min 1", "T1", "T2", "T3", "T4", "T4 Plus1", "T4 Plush 2"};
 
-            String realisasiT3, t4min1,t1,t2,t3,t4,t4plus1,t4plus2;
+            String realisasiT3, t4min1, t1, t2, t3, t4, t4plus1, t4plus2;
 
             System.out.println(headers);
             writer.writeNext(headers);
@@ -181,59 +187,58 @@ public class Rbb22C00Service {
                 //Realisai T3
                 if (rbb22C00Entity.getRealisaiT3() == null) {
                     realisasiT3 = "";
-                }else{
+                } else {
                     realisasiT3 = rbb22C00Entity.getRealisaiT3().toString().replace(".00", "");
                 }
 
                 //T4min1
                 if (rbb22C00Entity.getT4Min1() == null) {
                     t4min1 = "";
-                }else{
+                } else {
                     t4min1 = rbb22C00Entity.getT4Min1().toString().replace(".00", "");
                 }
 
                 //T1
                 if (rbb22C00Entity.getT1() == null) {
                     t1 = "";
-                }else{
+                } else {
                     t1 = rbb22C00Entity.getT1().toString().replace(".00", "");
                 }
 
                 //T2
                 if (rbb22C00Entity.getT2() == null) {
                     t2 = "";
-                }else{
+                } else {
                     t2 = rbb22C00Entity.getT2().toString().replace(".00", "");
                 }
 
                 //T3
                 if (rbb22C00Entity.getT3() == null) {
                     t3 = "";
-                }else{
+                } else {
                     t3 = rbb22C00Entity.getT3().toString().replace(".00", "");
                 }
 
                 //T4
                 if (rbb22C00Entity.getT4() == null) {
-                   t4 = "";
-                }else{
+                    t4 = "";
+                } else {
                     t4 = rbb22C00Entity.getT4().toString().replace(".00", "");
                 }
 
                 //T4Plus1
                 if (rbb22C00Entity.getT4Plus1() == null) {
                     t4plus1 = "";
-                }
-                else{
+                } else {
                     t4plus1 = rbb22C00Entity.getT4Plus1().toString().replace(".00", "");
                 }
                 if (rbb22C00Entity.getT4Plus2() == null) {
                     t4plus2 = "";
-                }else{
+                } else {
                     t4plus2 = rbb22C00Entity.getT4Plus2().toString().replace(".00", "");
                 }
 
-                String[] datas = {kdKomponen, namaKomponen, realisasiT3,t4min1,t1, t2,t3, t4,t4plus1, t4plus2};
+                String[] datas = {kdKomponen, namaKomponen, realisasiT3, t4min1, t1, t2, t3, t4, t4plus1, t4plus2};
                 writer.writeNext(datas);
                 System.out.println(datas);
 
@@ -260,9 +265,13 @@ public class Rbb22C00Service {
                 FileCopyUtils.copy(inputStream, response.getOutputStream());
 
                 System.out.println(writer);
+                file.delete();
 
 
             }
+        }else{
+            System.out.printf("Data kosong");
+        }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -274,107 +283,112 @@ public class Rbb22C00Service {
         public void pathExcelTxt(String fileName, List<RBB_22C00Entity> list) {
 
             try {
-
+                if (!list.isEmpty()) {
                 File fileCreate = new File("C:\\Users\\user\\Documents\\project\\MiniApolo\\mini-apolo\\"+ fileName);
 
                 FileWriter writer = new FileWriter(fileCreate);
                 String lineUp = "|";
 
+
                 String headers = "Kode Komponen"+lineUp+ "Nama Komonen"+lineUp+ "Reaslisai T3"+lineUp+ "T4 Min 1"+lineUp+ "T1"+lineUp+"T2"+lineUp+ "T3"+lineUp+ "T4"+lineUp+ "T4 Plus1"+lineUp+ "T4 Plush 2"+"\n";
 
                 System.out.println(headers);
                 writer.write(headers);
-                for (RBB_22C00Entity rbb22C00Entity : list) {
 
-                    String realisasiT3, t4min1,t1,t2,t3,t4,t4plus1,t4plus2;
-                    String kdKomponen = rbb22C00Entity.getKdKomponen();
-                    String namaKomponen = rbb22C00Entity.getNmKomponen();
+                    for (RBB_22C00Entity rbb22C00Entity : list) {
 
-                    //Realisai T3
-                    if (rbb22C00Entity.getRealisaiT3() == null) {
-                        realisasiT3 = "";
-                    }else{
-                        realisasiT3 = rbb22C00Entity.getRealisaiT3().toString().replace(".00", "");
+                        String realisasiT3, t4min1, t1, t2, t3, t4, t4plus1, t4plus2;
+                        String kdKomponen = rbb22C00Entity.getKdKomponen();
+                        String namaKomponen = rbb22C00Entity.getNmKomponen();
+
+                        //Realisai T3
+                        if (rbb22C00Entity.getRealisaiT3() == null) {
+                            realisasiT3 = "";
+                        } else {
+                            realisasiT3 = rbb22C00Entity.getRealisaiT3().toString().replace(".00", "");
+                        }
+
+                        //T4min1
+                        if (rbb22C00Entity.getT4Min1() == null) {
+                            t4min1 = "";
+                        } else {
+                            t4min1 = rbb22C00Entity.getT4Min1().toString().replace(".00", "");
+                        }
+
+                        //T1
+                        if (rbb22C00Entity.getT1() == null) {
+                            t1 = "";
+                        } else {
+                            t1 = rbb22C00Entity.getT1().toString().replace(".00", "");
+                        }
+
+                        //T2
+                        if (rbb22C00Entity.getT2() == null) {
+                            t2 = "";
+                        } else {
+                            t2 = rbb22C00Entity.getT2().toString().replace(".00", "");
+                        }
+
+                        //T3
+                        if (rbb22C00Entity.getT3() == null) {
+                            t3 = "";
+                        } else {
+                            t3 = rbb22C00Entity.getT3().toString().replace(".00", "");
+                        }
+
+                        //T4
+                        if (rbb22C00Entity.getT4() == null) {
+                            t4 = "";
+                        } else {
+                            t4 = rbb22C00Entity.getT4().toString().replace(".00", "");
+                        }
+
+                        //T4Plus1
+                        if (rbb22C00Entity.getT4Plus1() == null) {
+                            t4plus1 = "";
+                        } else {
+                            t4plus1 = rbb22C00Entity.getT4Plus1().toString().replace(".00", "");
+                        }
+                        if (rbb22C00Entity.getT4Plus2() == null) {
+                            t4plus2 = "";
+                        } else {
+                            t4plus2 = rbb22C00Entity.getT4Plus2().toString().replace(".00", "");
+                        }
+
+                        String datas = kdKomponen + lineUp + namaKomponen + lineUp + realisasiT3 + lineUp + t4min1 + lineUp + t1 + lineUp +
+                                t2 + lineUp + t3 + lineUp + t4 + lineUp + t4plus1 + lineUp + t4plus2 + "\n";
+
+
+                        writer.write(datas);
+                        System.out.println(datas);
+
                     }
+                    writer.flush();
+                    writer.close();
 
-                    //T4min1
-                    if (rbb22C00Entity.getT4Min1() == null) {
-                        t4min1 = "";
-                    }else{
-                        t4min1 = rbb22C00Entity.getT4Min1().toString().replace(".00", "");
+                    File file = new File("C:\\Users\\user\\Documents\\project\\MiniApolo\\mini-apolo\\" + fileName);
+
+                    if (file.exists()) {
+
+                        String url = "application/octet-stream";
+
+                        response.setContentType(url);
+
+                        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName()));
+
+                        response.setContentLength((int) file.length());
+
+                        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+
+                        FileCopyUtils.copy(inputStream, response.getOutputStream());
+
+                        System.out.println(writer);
+
+                        file.delete();
+
+
                     }
-
-                    //T1
-                    if (rbb22C00Entity.getT1() == null) {
-                        t1 = "";
-                    }else{
-                        t1 = rbb22C00Entity.getT1().toString().replace(".00", "");
-                    }
-
-                    //T2
-                    if (rbb22C00Entity.getT2() == null) {
-                        t2 = "";
-                    }else{
-                        t2 = rbb22C00Entity.getT2().toString().replace(".00", "");
-                    }
-
-                    //T3
-                    if (rbb22C00Entity.getT3() == null) {
-                        t3 = "";
-                    }else{
-                        t3 = rbb22C00Entity.getT3().toString().replace(".00", "");
-                    }
-
-                    //T4
-                    if (rbb22C00Entity.getT4() == null) {
-                        t4 = "";
-                    }else{
-                        t4 = rbb22C00Entity.getT4().toString().replace(".00", "");
-                    }
-
-                    //T4Plus1
-                    if (rbb22C00Entity.getT4Plus1() == null) {
-                        t4plus1 = "";
-                    }
-                    else{
-                        t4plus1 = rbb22C00Entity.getT4Plus1().toString().replace(".00", "");
-                    }
-                    if (rbb22C00Entity.getT4Plus2() == null) {
-                        t4plus2 = "";
-                    }else{
-                        t4plus2 = rbb22C00Entity.getT4Plus2().toString().replace(".00", "");
-                    }
-
-                    String datas = kdKomponen+lineUp+ namaKomponen+lineUp+ realisasiT3+lineUp+ t4min1+lineUp+ t1+lineUp+
-                            t2+lineUp+ t3+lineUp+ t4+lineUp+ t4plus1+lineUp+t4plus2+"\n";
-                    writer.write(datas);
-                    System.out.println(datas);
-
-                }
-                writer.flush();
-                writer.close();
-
-                File file = new File("C:\\Users\\user\\Documents\\project\\MiniApolo\\mini-apolo\\"+ fileName);
-                if(file.exists()) {
-                    String url = URLConnection.guessContentTypeFromName(file.getName());
-
-
-                        url = "application/octet-stream";
-
-                    response.setContentType(url);
-
-                    response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName()));
-
-                    response.setContentLength((int) file.length());
-
-                    InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-
-                    FileCopyUtils.copy(inputStream, response.getOutputStream());
-
-                    System.out.println(writer);
-
-
-                }
+                } else{System.out.println("Date Kosong");}
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
