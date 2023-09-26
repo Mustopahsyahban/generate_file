@@ -1,5 +1,8 @@
 package com.library.StringNum;
 
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+
 public enum StringNum {
 
 
@@ -7,7 +10,10 @@ public enum StringNum {
 
     FORMAT_DATE_STRIP_YYYYMMDD (2, "yyyy-MM-dd"),
 
-    FORMAT_DATE_SLASH_YYYYMMDD (2, "dd/MM/yyyy")
+    FORMAT_DATE_SLASH_YYYYMMDD (2, "dd/MM/yyyy"),
+
+    LOCATION_FILE_GENERATE_TXT (4, FileSystems.getDefault().getPath("").toAbsolutePath()+"\\src\\main\\java\\com\\library\\files\\txt\\"),
+    LOCATION_FILE_GENERATE_CSV (4, FileSystems.getDefault().getPath("").toAbsolutePath()+"\\src\\main\\java\\com\\library\\files\\csv\\")
 
 
     ;

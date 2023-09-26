@@ -9,5 +9,5 @@ public interface IndividualDebitorService {
 
     List<IndividualDebitorEnity> findAll();
 
-    public String  exportTxt();
+    public String  exportFile(String format);
 }

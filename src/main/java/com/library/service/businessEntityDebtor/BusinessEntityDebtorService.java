@@ -10,5 +10,5 @@ public interface BusinessEntityDebtorService {
 
     List<BusinessEntityDebtorEntity> findAll();
 
-    public String  exportTxt();
+    public String  exportFile(String format);
 }

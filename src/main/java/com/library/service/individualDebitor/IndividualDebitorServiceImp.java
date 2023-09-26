@@ -1,5 +1,6 @@
 package com.library.service.individualDebitor;
 
+import com.library.StringNum.StringNum;
 import com.library.dao.individualDebitor.IndividualDebitorDao;
 import com.library.entity.IndividualDebitorEnity;
 import com.library.service.generateFileService.GenerateFileService;
@@ -28,18 +29,23 @@ public class IndividualDebitorServiceImp implements IndividualDebitorService{
         List<IndividualDebitorEnity>list = individualDebitorDao.findAll();
         return list;
     }
-    public String  exportTxt() {
+    public String  exportFile(String format) {
         Date date = new Date();
         List<IndividualDebitorEnity> ada = individualDebitorDao.findAll();
+        String judul = "0103.600816." + years.format(date) + "." + month.format(date) + ".D01.1" + format;
+        if(format.equals(".txt")) {
 
-            String judul = "0103.600816."+years.format(date)+"."+month.format(date)+".D01.1.txt";
-
-            pathExcelTxt(judul, ada);
+            pathTxt(judul, ada);
             return judul;
+        }else if (format.equals(".csv")){
+            pathCsv(judul,ada);
+            return judul;
+        }
+        return null;
     }
-    public void pathExcelTxt(String fileName, List<IndividualDebitorEnity> list) {
+    public void pathTxt(String fileName, List<IndividualDebitorEnity> list) {
         Date date = new Date();
-        File fileCreate = new File("C:\\Users\\user\\Documents\\project\\MiniApolo\\mini-apolo\\"+ fileName);
+        File fileCreate = new File(StringNum.LOCATION_FILE_GENERATE_TXT.getDescription() + fileName);
         String lineUp = "|";
 
         String headers;
@@ -50,7 +56,7 @@ public class IndividualDebitorServiceImp implements IndividualDebitorService{
 
             for (IndividualDebitorEnity individualDebitorEnity : list) {
 
-                String datas = setValidationAndSetUpDatas(individualDebitorEnity,lineUp) +"\n";
+                String datas = setValidationAndSetUpDatasTxt(individualDebitorEnity,lineUp) +"\n";
 
                 listData.add(datas);
             }
@@ -60,12 +66,40 @@ public class IndividualDebitorServiceImp implements IndividualDebitorService{
 
             generateFileService.setFileTxtNullDataWriter(headers,fileCreate);
         }
-            File file = new File("C:\\Users\\user\\Documents\\project\\MiniApolo\\mini-apolo\\" + fileName);
+            File file = new File(StringNum.LOCATION_FILE_GENERATE_TXT.getDescription() + fileName);
         if (file.exists()) {
-            generateFileService.setGenerateFileTxt(file);
+            generateFileService.setGenerateFile(file);
             }
     }
-    public String setValidationAndSetUpDatas(IndividualDebitorEnity entity, String lineUp){
+
+    public void pathCsv(String fileName, List<IndividualDebitorEnity> list) {
+        Date date = new Date();
+        File fileCreate = new File(StringNum.LOCATION_FILE_GENERATE_TXT.getDescription() + fileName);
+        String [] headers;
+        if(list != null) {
+            Integer sizeDataint = list.size();
+            String sizeData = sizeDataint.toString();
+            headers = new String[]{"H","0103","600816",  years.format(date) , month.format(date) ,"D01","186" , sizeData};
+            List<String[]> listData = new ArrayList<>();
+
+            for (IndividualDebitorEnity individualDebitorEnity : list) {
+
+                String[] datas = setValidationAndSetUpDatasCsv(individualDebitorEnity) ;
+
+                listData.add(datas);
+            }
+            generateFileService.setFileCsvWriter(headers,listData,fileCreate);
+        }else {
+            headers = new String[]{"H","0103","600816", years.format(date), month.format(date),"D01","186","0"};
+
+            generateFileService.setFileCsvNullDataWriter(headers,fileCreate);
+        }
+        File file = new File(StringNum.LOCATION_FILE_GENERATE_TXT.getDescription() + fileName);
+        if (file.exists()) {
+            generateFileService.setGenerateFile(file);
+        }
+    }
+    public String setValidationAndSetUpDatasTxt(IndividualDebitorEnity entity, String lineUp){
         String FLG_DTL = "",
                 CIF = "",
                 ID_TYPE = "",
@@ -225,6 +259,171 @@ public class IndividualDebitorServiceImp implements IndividualDebitorService{
                 Mother_Maiden_Name+lineUp+
                 Branch_Office_Code+ lineUp+
         Data_Operation);
+
+
+        return result;
+    }
+
+    public String[] setValidationAndSetUpDatasCsv(IndividualDebitorEnity entity){
+        String FLG_DTL = "",
+                CIF = "",
+                ID_TYPE = "",
+                ID_NUMBER = "",
+                NAME_BY_ID_CARD = "",
+                FULL_NAME = "",
+                EDUCATION_CODE = "",
+                GENDER = "",
+                PLACE_BIRTH = "",
+                DATE_BIRTH = "",
+                TIN = "",
+                ADDRESS= "",
+                SUB_DISTRICT= "",
+                DISTRICT= "",
+                CITY_CODE= "",
+                POSTAL_CODE= "",
+                TLP_NUMBER= "",
+                MOBILE_NUMBER= "",
+                EMAIL= "",
+                COUNTRY_CODE_OF_DOMICILE = "",
+                Occupation_Code= "",
+                Workplace= "",
+                Field_Code_OF_Workplace= "",
+                Workplace_Address= "",
+                Gross_Annual_Income= "",
+                Income_Source_Code= "",
+                Num_of_Dependents= "",
+                Relationship_Reporter_CODE= "",
+                Deb_Group_Code= "",
+                Marital_StatuS_Debtor= "",
+                Spouses_Id_Number= "",
+                Spouses_Name= "",
+                Sp_Date_Birth= "",
+                Prop_Separation_Agreement= "",
+                Viol_BMPK_BMPD_BMPP= "",
+                Exce_BMPK_BMPD_BMPP= "",
+                Mother_Maiden_Name= "",
+                Branch_Office_Code= "",
+                Data_Operation= "";
+
+        if(entity.getFlgDtl() != null) {
+            FLG_DTL = entity.getFlgDtl().trim();
+        }if (entity.getCif()!=null){
+            CIF = entity.getCif().trim();
+        }if(entity.getIdType()!=null){
+            ID_TYPE = entity.getIdType().trim();
+        }if (entity.getIdNumber()!= null){
+            ID_NUMBER = entity.getIdNumber().trim();
+        }if (entity.getNameByIdCard()!=null){
+            NAME_BY_ID_CARD = entity.getNameByIdCard().trim();
+        }if (entity.getFullName()!=null){
+            FULL_NAME= entity.getFullName().trim();
+        }if(entity.getEducationCode()!=null){
+            EDUCATION_CODE = entity.getEducationCode().trim();
+        }if(entity.getGender()!=null){
+            GENDER= entity.getGender().trim();
+        }if(entity.getPlaceBirth()!= null){
+            PLACE_BIRTH = entity.getPlaceBirth().trim();
+        }if (entity.getBrithDate()!= null){
+            DATE_BIRTH = iob.format(entity.getBrithDate()).trim();
+        }if (entity.getTin()!=null){
+            TIN = entity.getTin().trim();
+        }if (entity.getAddress()!= null){
+            ADDRESS = entity.getAddress().trim();
+        }if(entity.getSubDistrict()!= null){
+            SUB_DISTRICT = entity.getSubDistrict().trim();
+        }if (entity.getDistrict()!=null){
+            DISTRICT = entity.getDistrict().trim();
+        }if(entity.getCityCode()!= null){
+            CITY_CODE = entity.getCityCode().trim();
+        }if(entity.getPostalCode()!= null){
+            POSTAL_CODE = entity.getPostalCode().trim();
+        }if(entity.getTlpNumber() != null){
+            TLP_NUMBER = entity.getTlpNumber().trim();
+        }if(entity.getMobileNumber()!= null){
+            MOBILE_NUMBER = entity.getMobileNumber().trim();
+        }if(entity.getEmail()!=null){
+            EMAIL = entity.getEmail().trim();
+        }if (entity.getCountryCodeDomicile()!=null){
+            COUNTRY_CODE_OF_DOMICILE = entity.getCountryCodeDomicile().trim();
+        }if(entity.getOccupationCode()!= null){
+            Occupation_Code = entity.getOccupationCode().trim();
+        }if(entity.getWorkPlace() != null){
+            Workplace = entity.getWorkPlace().trim();
+        }if (entity.getFieldCodeOfWorkplace()!=null){
+            Field_Code_OF_Workplace = entity.getFieldCodeOfWorkplace().trim();
+        }if (entity.getWorkplaceAddress()!=null){
+            Workplace_Address = entity.getWorkplaceAddress().trim();
+        }if (entity.getGrossAnnualIncome()!=null){
+            Gross_Annual_Income = (entity.getGrossAnnualIncome()).toString().replace(".00","").trim();
+        }if (entity.getIncomeSourceCode()!=null){
+            Income_Source_Code = entity.getIncomeSourceCode().trim();
+        }if (entity.getNumOfDependents() != null){
+            Num_of_Dependents = (entity.getNumOfDependents()).toString().replace(".00","").trim();
+        }if (entity.getRelationshipReporterCode() !=null){
+            Relationship_Reporter_CODE = entity.getRelationshipReporterCode().trim();
+        }if(entity.getDebGroupCode() != null){
+            Deb_Group_Code = entity.getDebGroupCode().trim();
+        }if(entity.getMaritalStatuSDebtor() !=null){
+            Marital_StatuS_Debtor = entity.getMaritalStatuSDebtor().trim();
+        }if (entity.getSpousesIdNumber()!=null){
+            Spouses_Id_Number = entity.getSpousesIdNumber().trim();
+        }if(entity.getSpousesName() !=null){
+            Spouses_Name = entity.getSpousesName().trim();
+        }if(entity.getSpDateBirth()!=null){
+            Sp_Date_Birth = iob.format(entity.getSpDateBirth()).trim();
+        }if (entity.getPropSeparationAgreement()!=null){
+            Prop_Separation_Agreement = entity.getPropSeparationAgreement().trim();
+        }if(entity.getViolBmpkBmpdBmpp()!= null){
+            Viol_BMPK_BMPD_BMPP = entity.getViolBmpkBmpdBmpp().trim();
+        }if(entity.getExceBmpBmpdBmpp()!=null){
+            Exce_BMPK_BMPD_BMPP = entity.getExceBmpBmpdBmpp().trim();
+        }if (entity.getMotherMaidenName()!= null){
+            Mother_Maiden_Name = entity.getMotherMaidenName().trim();
+        }if (entity.getBranchOfficeCode()!= null){
+            Branch_Office_Code = entity.getBranchOfficeCode().trim();
+        }if(entity.getDataOperation()!= null){
+            Data_Operation = entity.getDataOperation().trim();
+        }
+
+        String[] result = {FLG_DTL,
+                CIF,
+                ID_TYPE,
+                ID_NUMBER,
+                NAME_BY_ID_CARD,
+                FULL_NAME,
+                EDUCATION_CODE,
+                GENDER,
+                PLACE_BIRTH,
+                DATE_BIRTH,
+                TIN,
+                ADDRESS,
+                SUB_DISTRICT,
+                DISTRICT,
+                CITY_CODE,
+                POSTAL_CODE,
+                TLP_NUMBER,
+                MOBILE_NUMBER,
+                EMAIL,
+                COUNTRY_CODE_OF_DOMICILE,
+                Occupation_Code,
+                Workplace,
+                Field_Code_OF_Workplace,
+                Workplace_Address,
+                Gross_Annual_Income,
+                Income_Source_Code,
+                Num_of_Dependents,
+                Relationship_Reporter_CODE,
+                Deb_Group_Code,
+                Marital_StatuS_Debtor,
+                Spouses_Id_Number,
+                Spouses_Name,
+                Sp_Date_Birth,
+                Prop_Separation_Agreement,
+                Viol_BMPK_BMPD_BMPP,
+                Exce_BMPK_BMPD_BMPP,
+                Mother_Maiden_Name,
+                Branch_Office_Code,
+                Data_Operation};
 
 
         return result;
